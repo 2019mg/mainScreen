@@ -2,6 +2,7 @@
 .vs
 builds
 *.docx
+*.rar
 # 
 /[Ll]ibrary/
 /[Tt]emp/
