@@ -32,10 +32,17 @@ public class trainee : MonoBehaviour {
 					break;
 
 				case TouchPhase.Moved:
-					if (offset_x < nowsize.x / 2 && offset_x > -nowsize.x / 2 && offset_y < nowsize.y / 2 && offset_y > -nowsize.y / 2)//tapped
-					{
-						transform.position = new Vector3(Camera.main.ScreenToWorldPoint(touch.position).x - offset_x, Camera.main.ScreenToWorldPoint(touch.position).y - offset_y, 0);
+					if (offset_x < nowsize.x / 2 && offset_x > -nowsize.x / 2 && offset_y < nowsize.y / 2 && offset_y > -nowsize.y / 2){//tapped
+						if (!sortManager.Instance().getTappedList().Contains(gameObject.name))
+							sortManager.Instance().getTappedList().Add(gameObject.name);
+						if (sortManager.Instance().maxOrderName() == gameObject.name)//order is max
+							transform.position = new Vector3(Camera.main.ScreenToWorldPoint(touch.position).x - offset_x, Camera.main.ScreenToWorldPoint(touch.position).y - offset_y, 0);
 
+					}
+					else {
+						if (sortManager.Instance().getTappedList().Contains(gameObject.name)) {
+							sortManager.Instance().getTappedList().Remove(gameObject.name);
+						}
 					}
 					break;
 			}

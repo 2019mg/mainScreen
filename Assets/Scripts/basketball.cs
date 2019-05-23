@@ -38,7 +38,15 @@ public class basketball : MonoBehaviour {
 			}
 			if (touch.phase == TouchPhase.Moved) {
 				if (touchOffset.x < nowsize.x / 2 && touchOffset.x > -nowsize.x / 2 && touchOffset.y < nowsize.y / 2 && touchOffset.y > -nowsize.y / 2) {//touched the object, need to move it
-					transform.position = new Vector3(Camera.main.ScreenToWorldPoint(touch.position).x - touchOffset.x, Camera.main.ScreenToWorldPoint(touch.position).y - touchOffset.y, 0);
+					if(!sortManager.Instance().getTappedList().Contains(gameObject.name))
+						sortManager.Instance().getTappedList().Add(gameObject.name);
+					if(sortManager.Instance().maxOrderName()==gameObject.name)//order is max
+						transform.position = new Vector3(Camera.main.ScreenToWorldPoint(touch.position).x - touchOffset.x, Camera.main.ScreenToWorldPoint(touch.position).y - touchOffset.y, 0);
+				}
+				else {
+					if (sortManager.Instance().getTappedList().Contains(gameObject.name)) {
+						sortManager.Instance().getTappedList().Remove(gameObject.name);
+					}
 				}
 			}
 		}
