@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 495247564}
   m_Layer: 0
   m_Name: trainee
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -803,7 +803,7 @@ GameObject:
   - component: {fileID: 1023436954}
   m_Layer: 0
   m_Name: basketball
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -823,8 +823,8 @@ MonoBehaviour:
   storeArea: {fileID: 848249376}
   cxk: {fileID: 495247563}
   debugText: {fileID: 348515837}
-  cxkText: {fileID: 742737471}
   cxkSound: {fileID: 81782334}
+  cxkText: {fileID: 742737471}
 --- !u!212 &1023436955
 SpriteRenderer:
   m_ObjectHideFlags: 0

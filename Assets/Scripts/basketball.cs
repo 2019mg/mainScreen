@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class basketball : MonoBehaviour {
+public class basketball : playerInterface {
 	public GameObject storeArea;
 	public GameObject cxk;
 	public Text debugText;
 
-	private Vector2 touchOffset;
-	private Vector3 nowsize;
-	private Vector3 smallscale;//target small scale
+	private Vector3 smallScale;//target small scale
+	private Vector3 largeScale;
 
 	//--------------cxk 彩蛋
 	public AudioSource cxkSound;
@@ -21,7 +20,8 @@ public class basketball : MonoBehaviour {
 
 
 	void Start() {
-		smallscale = new Vector3(0.7f, 0.7f, 1);
+		smallScale = new Vector3(0.7f, 0.7f, 1);
+		largeScale = new Vector3(1, 1, 1);
 		nowsize = GetComponent<SpriteRenderer>().bounds.size;
 		debugText.text = "";
 		cxkText.text = "";
@@ -30,61 +30,17 @@ public class basketball : MonoBehaviour {
 
 
 	void Update() {
-		if (Input.touchCount > 0){//move
-			Touch touch = Input.GetTouch(0);
-			if (touch.phase == TouchPhase.Began) {
-				touchOffset.x = Camera.main.ScreenToWorldPoint(touch.position).x - transform.position.x;
-				touchOffset.y = Camera.main.ScreenToWorldPoint(touch.position).y - transform.position.y;
-			}
-			if (touch.phase == TouchPhase.Moved) {
-				if (touchOffset.x < nowsize.x / 2 && touchOffset.x > -nowsize.x / 2 && touchOffset.y < nowsize.y / 2 && touchOffset.y > -nowsize.y / 2) {//touched the object, need to move it
-					if(!sortManager.Instance().getTappedList().Contains(gameObject.name))
-						sortManager.Instance().getTappedList().Add(gameObject.name);
-					if(sortManager.Instance().maxOrderName()==gameObject.name)//order is max
-						transform.position = new Vector3(Camera.main.ScreenToWorldPoint(touch.position).x - touchOffset.x, Camera.main.ScreenToWorldPoint(touch.position).y - touchOffset.y, 0);
-				}
-				else {
-					if (sortManager.Instance().getTappedList().Contains(gameObject.name)) {
-						sortManager.Instance().getTappedList().Remove(gameObject.name);
-					}
-				}
-			}
+		touchMove();
+		if (!inStoreArea()) {//in operation area
+			beLarge(largeScale);
 		}
-
-		if (!inArea(transform.position)){//in operation area
-			if (transform.localScale.x < 1){//make it larger
-				transform.localScale = new Vector3(transform.localScale.x + 0.1f, transform.localScale.y + 0.1f, 1);
-				nowsize = GetComponent<SpriteRenderer>().bounds.size;
-			}
-			if (Input.touchCount == 0) {
-				if (store.Instance().getlist().Contains(gameObject.name)) {
-					//erase and update index automatically
-					store.Instance().getlist().Remove(gameObject.name);
-				}
-			}
+		if (inStoreArea()){//in store area
+			beSmall(smallScale);
+			if(Input.touchCount==0)
+				correctPos();
 		}
-
-		if (inArea(transform.position)){//in store area
-			if (transform.localScale.x > smallscale.x){//make it smaller
-				transform.localScale = new Vector3(transform.localScale.x - 0.1f, transform.localScale.y - 0.1f, 1);
-				nowsize = GetComponent<SpriteRenderer>().bounds.size;
-			}
-
-			if (Input.touchCount == 0) {//correct position in store area
-				if (!store.Instance().getlist().Contains(gameObject.name)) {
-					store.Instance().getlist().Add(gameObject.name);
-				}
-				else {
-					transform.position = store.Instance().getWorldPos(gameObject.name);
-					cxkText.text = transform.position.ToString();
-					gameObject.GetComponent<SpriteRenderer>().sortingOrder = store.Instance().getlist().IndexOf(gameObject.name);
-				}
-			}
-		}
-
 
 		//=========================cxk 彩蛋===============================
-		debugText.text = transform.position.ToString() + '\n' + cxk.transform.position.ToString();
 		cxkoffset.x = transform.position.x - cxk.transform.position.x;
 		cxkoffset.y = transform.position.y - cxk.transform.position.y;
 		if (cxkoffset.x < 0)
@@ -107,16 +63,4 @@ public class basketball : MonoBehaviour {
 
 	}
 
-
-	//function tool
-	private bool inArea(Vector3 vec3) {
-		Vector2 offset;
-		offset.x = vec3.x - storeArea.transform.position.x;
-		offset.y = vec3.y - storeArea.transform.position.y;
-		Vector3 size = storeArea.GetComponent<SpriteRenderer>().bounds.size;
-		if (offset.x < size.x / 2 && offset.x > -size.x / 2 && offset.y < size.y / 2 && offset.y > -size.y / 2)
-			return true;
-		else
-			return false;
-	}
 }

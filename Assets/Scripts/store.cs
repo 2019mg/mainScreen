@@ -2,29 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class store : MonoBehaviour {
+public class store {
 	private static store instance;//singleton
-
 	private float interval;
 	private Vector3 startPos;
 
 	private static List<string> storelist;
+	GameObject storeArea= GameObject.Find("storeArea");
 
-	void Start() {
+	private store() {
 		storelist = new List<string>();
-
-		interval = GetComponent<SpriteRenderer>().bounds.size.y * 2/ 3;
+		interval = storeArea.GetComponent<SpriteRenderer>().bounds.size.y * 2/ 3;
 		// (below) 中心点向左减去1/3原storeArea长度，即从1/6处开始堆
-		startPos = new Vector3(transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 3, transform.position.y, 0);
+		startPos = new Vector3(storeArea.transform.position.x - storeArea.GetComponent<SpriteRenderer>().bounds.size.x / 3, storeArea.transform.position.y, 0);
 	}
 
 	public static store Instance() {
 		if (instance == null) {
-			instance = FindObjectOfType(typeof(store)) as store;
-			if (instance == null) {
-				GameObject obj = new GameObject();
-				instance = obj.AddComponent<store>();
-			}
+			instance = new store();
 		}
 		return instance;
 	}
@@ -36,9 +31,5 @@ public class store : MonoBehaviour {
 	public Vector3 getWorldPos(string name) {
 		Vector3 vec3 = new Vector3(startPos.x + interval * (storelist.IndexOf(name) + 1), startPos.y, 0);
 		return vec3;
-	}
-
-	void Update() {
-
 	}
 }
