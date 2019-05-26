@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class basketball : playerInterface {
-	public GameObject storeArea;
+public class Basketball : PlayerInterface {
 	public GameObject cxk;
 	public Text debugText;
 
@@ -20,6 +19,7 @@ public class basketball : playerInterface {
 
 
 	void Start() {
+		typeOfObject = 0;
 		smallScale = new Vector3(0.7f, 0.7f, 1);
 		largeScale = new Vector3(1, 1, 1);
 		nowsize = GetComponent<SpriteRenderer>().bounds.size;
@@ -36,7 +36,7 @@ public class basketball : playerInterface {
 		}
 		if (inStoreArea()){//in store area
 			beSmall(smallScale);
-			if(Input.touchCount==0)
+			if(!isTapped)
 				correctPos();
 		}
 

@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerInterface : MonoBehaviour {
+public class PlayerInterface : MonoBehaviour {
 	public Vector2 touchOffset;
 	public Vector3 nowsize;
 	public bool isTapped;
+	public bool isInStore;
+	public int typeOfObject;
 
-	public playerInterface() {
+	public PlayerInterface() {
 		touchOffset = new Vector2();
 		nowsize = new Vector3();
 		isTapped = false;
+		isInStore = true;
 	}
 
 	private string tappedObject(Vector2 tapPos) {
@@ -67,30 +70,38 @@ public class playerInterface : MonoBehaviour {
 			transform.localScale = new Vector3(transform.localScale.x - 0.1f, transform.localScale.y - 0.1f, 1);
 			nowsize = GetComponent<SpriteRenderer>().bounds.size;
 		}
-
 	}
 
 	public void correctPos() {
-		if (Input.touchCount == 0) {
-			transform.position = store.Instance().getWorldPos(gameObject.name);
-			gameObject.GetComponent<SpriteRenderer>().sortingOrder = store.Instance().getlist().IndexOf(gameObject.name);
+		if (!isTapped && typeOfObject == 0) {
+			transform.position = PuzzleStoreArea.Instance().getWorldPos(gameObject.name);
+			gameObject.GetComponent<SpriteRenderer>().sortingOrder = PuzzleStoreArea.Instance().getIndex(gameObject.name);
+		}
+		if(!isTapped && typeOfObject == 1) {
+			transform.position = ToolStoreArea.Instance().getWorldPos(gameObject.name);
+			gameObject.GetComponent<SpriteRenderer>().sortingOrder = ToolStoreArea.Instance().getIndex(gameObject.name);
 		}
 	}
 
 	public bool inStoreArea() {
-		GameObject storeArea = GameObject.Find("storeArea");
-		Vector2 offset;
-		offset.x = transform.position.x - storeArea.transform.position.x;
-		offset.y = transform.position.y - storeArea.transform.position.y;
+		GameObject storeArea = GameObject.Find("PuzzleStoreArea");
+		float offsetY;
+		offsetY = transform.position.y - storeArea.transform.position.y;
 		Vector3 size = storeArea.GetComponent<SpriteRenderer>().bounds.size;
-		if (System.Math.Abs(offset.x) < nowsize.x / 2 + size.x / 2 && System.Math.Abs(offset.y) < nowsize.y / 2 + size.y / 2) {
-			if (!store.Instance().getlist().Contains(gameObject.name))
-				store.Instance().getlist().Add(gameObject.name);
+		if ( System.Math.Abs(offsetY) < size.y / 2) {
+			isInStore = true;
+			if(typeOfObject==0)
+				PuzzleStoreArea.Instance().refreshStore();
+			if(typeOfObject==1)
+				ToolStoreArea.Instance().refreshStore();
 			return true;
 		}
 		else {
-			if (store.Instance().getlist().Contains(gameObject.name))
-				store.Instance().getlist().Remove(gameObject.name);
+			isInStore = false;
+			if (typeOfObject == 0)
+				PuzzleStoreArea.Instance().refreshStore();
+			if (typeOfObject == 1)
+				ToolStoreArea.Instance().refreshStore();
 			return false;
 		}
 	}

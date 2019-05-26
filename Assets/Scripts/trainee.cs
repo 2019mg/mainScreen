@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class trainee : playerInterface {
+public class Trainee : PlayerInterface {
 	public Text debugText;
-	public GameObject storeArea;
 
 	//private Vector3 nowsize;
 	private Vector3 smallScale;//target small scale
 	private Vector3 largeScale;
 
 	void Start() {
+		typeOfObject = 0;
 		smallScale = new Vector3(0.3f, 0.3f, 1);
 		largeScale = new Vector3(1, 1, 1);
 		nowsize = GetComponent<SpriteRenderer>().bounds.size;
@@ -27,7 +27,7 @@ public class trainee : playerInterface {
 
 		if (inStoreArea()) {//in store area
 			beSmall(smallScale);
-			if (Input.touchCount == 0)
+			if (!isTapped)
 				correctPos();
 		}
 	}
