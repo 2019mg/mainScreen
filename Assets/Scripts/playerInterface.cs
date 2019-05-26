@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInterface : MonoBehaviour {
+public abstract class PlayerInterface : MonoBehaviour {
 	public Vector2 touchOffset;
 	public Vector3 nowsize;
 	public bool isTapped;

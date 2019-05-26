@@ -360,6 +360,7 @@ MonoBehaviour:
   nowsize: {x: 0, y: 0, z: 0}
   isTapped: 0
   isInStore: 1
+  typeOfObject: 0
   debugText: {fileID: 348515837}
 --- !u!212 &495247565
 SpriteRenderer:
@@ -713,7 +714,7 @@ GameObject:
   - component: {fileID: 798791995}
   m_Layer: 0
   m_Name: cxk
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -797,6 +798,7 @@ MonoBehaviour:
   nowsize: {x: 0, y: 0, z: 0}
   isTapped: 0
   isInStore: 1
+  typeOfObject: 1
 --- !u!1 &848249376
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +913,7 @@ MonoBehaviour:
   nowsize: {x: 0, y: 0, z: 0}
   isTapped: 0
   isInStore: 1
+  typeOfObject: 0
   cxk: {fileID: 495247563}
   debugText: {fileID: 348515837}
   cxkSound: {fileID: 81782334}
@@ -991,7 +994,7 @@ GameObject:
   - component: {fileID: 1266768131}
   m_Layer: 0
   m_Name: jntm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1075,6 +1078,7 @@ MonoBehaviour:
   nowsize: {x: 0, y: 0, z: 0}
   isTapped: 0
   isInStore: 1
+  typeOfObject: 1
 --- !u!1 &1368105589
 GameObject:
   m_ObjectHideFlags: 0
